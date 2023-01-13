@@ -39,14 +39,16 @@ jobs:
           - brave-bin
           - yay
     steps:
-      - name: Build Package
-      uses: 2m/arch-pkgbuild-builder@v1.16
-      with:
-        target: 'run'
+     - name: Build Package
+     - uses: 2m/arch-pkgbuild-builder@v1.16
+       with:
+        target: 'pkgbuild'
         pkgname: '${{ matrix.pkg }}'
-        command: `mkdir packages $$ mv *.zst /packages`
-      - name: Upload package
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-${{ matrix.pkg }}
-          path: path/to/artifact/world.txt
+     - run: mkdir packages $$ mv *.zst /packages
+     
+     - name: Upload Package
+       uses: actions/upload-artifact@v3
+       with:
+        name: test-${{ matrix.pkg }}
+        path: packages/
+        
