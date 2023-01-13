@@ -44,6 +44,8 @@ jobs:
        with:
         target: 'pkgbuild'
         pkgname: '${{ matrix.pkg }}'
+       
+     - name: Move Packages  
        run: mkdir packages $$ mv *.zst /packages
      
      - name: Upload Package
