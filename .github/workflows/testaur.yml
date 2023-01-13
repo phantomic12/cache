@@ -19,11 +19,11 @@ jobs:
           AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
         run: |
           sh git.sh
-          cd pacman-repo
+          cd pkgbuilds
           git config user.name "$COMMIT_AUTHOR_NAME"
           git config user.email "$COMMIT_AUTHOR_EMAIL"
           git add .
-          git commit -m "Update by $GITHUB_REPOSITORY@$GITHUB_SHA" --allow-empty
+          git commit -m "Pkgbuilds Updated $GITHUB_REPOSITORY@$GITHUB_SHA" --allow-empty
           echo "username=$AUTH_USERNAME" >> /tmp/git-login.txt
           echo "password=$AUTH_PASSWORD" >> /tmp/git-login.txt
           echo '#! /bin/bash' >> /tmp/credential-helper
@@ -42,6 +42,9 @@ jobs:
           - brave-bin
           - yay
     steps:
+     - name: Checkout Code
+       uses: actions/checkout@v3
+        
      - name: Build Package
        uses: 2m/arch-pkgbuild-builder@v1.16
        with:
