@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        run: git clone https://github.com/phantomic12/testing.git
         
       - name: Upload packages
         env:
@@ -18,8 +18,8 @@ jobs:
           AUTH_USERNAME: phantomic12
           AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
         run: |
+          cd testing
           sh git.sh
-          cd pkgbuilds
           git config user.name "$COMMIT_AUTHOR_NAME"
           git config user.email "$COMMIT_AUTHOR_EMAIL"
           git add .
