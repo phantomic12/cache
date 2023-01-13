@@ -8,7 +8,6 @@ jobs:
   gitclone:
     runs-on: ubuntu-latest
     steps:
-      - run: sh git.sh
       - name: Upload packages
         env:
           COMMIT_AUTHOR_NAME: phantomic12
@@ -16,6 +15,7 @@ jobs:
           AUTH_USERNAME: phantomic12
           AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
         run: |
+          sh git.sh
           cd pacman-repo
           git config user.name "$COMMIT_AUTHOR_NAME"
           git config user.email "$COMMIT_AUTHOR_EMAIL"
@@ -40,11 +40,11 @@ jobs:
           - yay
     steps:
      - name: Build Package
-     - uses: 2m/arch-pkgbuild-builder@v1.16
+       uses: 2m/arch-pkgbuild-builder@v1.16
        with:
         target: 'pkgbuild'
         pkgname: '${{ matrix.pkg }}'
-     - run: mkdir packages $$ mv *.zst /packages
+       run: mkdir packages $$ mv *.zst /packages
      
      - name: Upload Package
        uses: actions/upload-artifact@v3
