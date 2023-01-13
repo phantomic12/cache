@@ -30,7 +30,7 @@ jobs:
           echo 'cat /tmp/git-login.txt' >> /tmp/credential-helper
           chmod +x /tmp/credential-helper
           git config credential.helper '/tmp/credential-helper'
-          git push master
+          git push main
   buildpkg:
     if: ${{ always() }}
     needs: [gitclone]
