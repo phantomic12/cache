@@ -7,34 +7,6 @@ on:
 jobs:
   gitclone:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        run: git clone https://github.com/phantomic12/testing.git
-        
-      - name: Upload packages
-        env:
-          COMMIT_AUTHOR_NAME: phantomic12
-          COMMIT_AUTHOR_EMAIL: ${{ secrets.COMMIT_AUTHOR_EMAIL }}
-          AUTH_USERNAME: phantomic12
-          AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
-        run: |
-          cd testing
-          sh git.sh
-          git config user.name "$COMMIT_AUTHOR_NAME"
-          git config user.email "$COMMIT_AUTHOR_EMAIL"
-          git add .
-          git commit -m "Pkgbuilds Updated $GITHUB_REPOSITORY@$GITHUB_SHA" --allow-empty
-          echo "username=$AUTH_USERNAME" >> /tmp/git-login.txt
-          echo "password=$AUTH_PASSWORD" >> /tmp/git-login.txt
-          echo '#! /bin/bash' >> /tmp/credential-helper
-          echo 'cat /tmp/git-login.txt' >> /tmp/credential-helper
-          chmod +x /tmp/credential-helper
-          git config credential.helper '/tmp/credential-helper'
-          git push origin main
-  buildpkg:
-    if: ${{ always() }}
-    needs: [gitclone]
-    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -44,6 +16,9 @@ jobs:
     steps:
      - name: Checkout Code
        uses: actions/checkout@v3
+       
+     - name: git clone
+       run: git clone https://aur.archlinux.org/${{ matrix.pkg }}.git
         
      - name: Build Package
        uses: 2m/arch-pkgbuild-builder@v1.16
